@@ -1,5 +1,5 @@
 package Net::Whois::ARIN::Customer;
-# $Id: Customer.pm,v 1.8 2004/05/14 22:43:28 tcaine Exp $
+# $Id: Customer.pm,v 1.9 2004/05/28 02:57:20 tcaine Exp $
 
 =pod
 
@@ -37,7 +37,7 @@ RIN's Whois server.  Each attribute of the Customer record has an accessor/mutat
 
 use strict;
 use vars qw{ $VERSION };
-$VERSION = '0.01';
+$VERSION = '0.08';
 
 =pod
 

@@ -1,5 +1,5 @@
 package Net::Whois::ARIN::Contact;
-# $Id: Contact.pm,v 1.6 2004/05/05 16:25:20 tcaine Exp $
+# $Id: Contact.pm,v 1.7 2004/05/28 02:57:20 tcaine Exp $
 
 =pod
 
@@ -39,7 +39,7 @@ The Net::Whois::ARIN::Contact module is simple class which is used to store the 
 
 use strict;
 use vars qw{ $VERSION };
-$VERSION = '0.01';
+$VERSION = '0.08';
 
 =pod
 

@@ -1,5 +1,5 @@
 package Net::Whois::ARIN;
-# $Id: ARIN.pm,v 1.18 2004/05/14 22:43:26 tcaine Exp $
+# $Id: ARIN.pm,v 1.20 2004/05/28 03:06:04 tcaine Exp $
 
 =pod 
 
@@ -55,7 +55,7 @@ This module provides a Perl interface to the ARIN Whois server.  The module take
 use strict;
 
 use vars qw/ $VERSION /;
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 use Carp;
 use IO::Socket;
@@ -451,11 +451,15 @@ sub domain {
 
 =head1 SEE ALSO
 
-Net::Whois::ARIN::AS
-Net::Whois::ARIN::Network
-Net::Whois::ARIN::Contact
-Net::Whois::ARIN::Organization
-Net::Whois::ARIN::Customer
+L<Net::Whois::ARIN::AS>
+
+L<Net::Whois::ARIN::Network>
+
+L<Net::Whois::ARIN::Contact>
+
+L<Net::Whois::ARIN::Organization>
+
+L<Net::Whois::ARIN::Customer>
 
 =head1 AUTHOR
 
@@ -463,7 +467,9 @@ Todd Caine  <todd at pobox.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002, 2003, 2004 Todd Caine.  All rights reserved. This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+Copyright (c) 2004 Todd Caine.  All rights reserved. 
+
+This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
 =cut
 

@@ -10,7 +10,7 @@ WriteMakefile(
                            },
     (($] ge '5.005') ?
         (   'AUTHOR'   => 'Todd Caine <todd@pobox.com>',
-            'ABSTRACT' => 'interface to ARIN whois',
+            'ABSTRACT' => 'Client interface to the ARIN Whois server.',
         ) : (),
     ),
 );

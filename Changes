@@ -1,5 +1,8 @@
 Revision history for Perl extension Net::Whois::ARIN.
 
+0.08    Thu May 27 19:53:27 2004
+        - adjusting test suite for everyone's favorite OS
+
 0.07    Fri May 14 15:24:50 2004
         - removed duplication variable declaration in N::W::A->organization
         - initializing _contacts attribute in all record object constructors

@@ -1,5 +1,5 @@
 package Net::Whois::ARIN::Organization;
-# $Id: Organization.pm,v 1.8 2004/05/14 22:43:28 tcaine Exp $
+# $Id: Organization.pm,v 1.9 2004/05/28 02:57:20 tcaine Exp $
 
 =pod
 
@@ -37,7 +37,7 @@ The Net::Whois::ARIN::Organization module is simple class which is used to store
 
 use strict;
 use vars qw{ $VERSION };
-$VERSION = '0.01';
+$VERSION = '0.08';
 
 =pod
 
