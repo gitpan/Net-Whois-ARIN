@@ -1,7 +1,7 @@
 
-use Test::More tests => 13;
+use Test::More tests => 26;
 
-BEGIN { use_ok( 'Net::Whois::ARIN' ); }
+use_ok( 'Net::Whois::ARIN' );
 
 my $w = Net::Whois::ARIN->new(
     -hostname=> 'whois.arin.net',
@@ -11,36 +11,46 @@ my $w = Net::Whois::ARIN->new(
 
 isa_ok($w, 'Net::Whois::ARIN');
 
-my $result = $w->query('207.173.112.1');
+my $result = $w->query('207.173.0.0');
 ok($result, 'got a response from the whois server');
 
-my @results = $w->query('NET-207-173-112-0-1');
+my @results = $w->query('NET-207-173-0-0-1');
 ok(@results > 1, 'got a response from the whois server');
 
-my @output = $w->net('207.173.112.0');
-ok(@output == 1, 'one result for net 207.173.112.0');
+my @output = $w->network('207.173.0.0');
+ok(@output == 1, 'one result for net 207.173.0.0');
+isa_ok($output[0], 'Net::Whois::ARIN::Network');
 
-my %asn_rec = $w->asn(5650);
-ok(exists $asn_rec{'ASNumber'}, 'lookup on ASN 5650 is valid');
+my @contacts = $output[0]->contacts;
+is(scalar(@contacts), 5, 'AS5650 has 5 point-of-contacts');
+isa_ok $_, 'Net::Whois::ARIN::Contact' for @contacts;
 
-my %poc_rec = $w->poc('DM2339-ARIN');
-ok(exists $poc_rec{'Name'}, 'POC record for DM2339-ARIN is valid');
+my $as = $w->asn(5650);
+isa_ok($as, 'Net::Whois::ARIN::AS');
+is($as->ASNumber, 5650, 'lookup on AS5650 returned AS5650');
 
-my %org_rec = $w->org('!ELIX');
-ok(exists $org_rec{'OrgName'}, 'one org record for handle ELIX');
+@contacts = $as->contacts;
+is(scalar(@contacts), 3, 'AS5650 has 3 point-of-contacts');
+isa_ok $_, 'Net::Whois::ARIN::Contact' for @contacts;
 
-@output = $w->org('ELIX');
-ok(@output == 1, 'one org record for ELIX');
+my @contact = $w->contact('Caine, Todd');
+ok(@contact > 0, 'POC records found for Caine, Todd');
+
+@contact = $w->contact('TCA53-ARIN');
+isa_ok($contact[0], 'Net::Whois::ARIN::Contact');
+
+my @org = $w->organization('ELIX');
+isa_ok($org[0], 'Net::Whois::ARIN::Organization');
+ok($org[0]->OrgName, 'one org record for handle ELIX');
 
 @output = $w->domain('eli.net');
+$DB::single ++;
 ok(@output, 'valid domain query');
 
 @output = $w->domain('foobar.com');
 ok(@output, 'single valid domain query');
 
-my %handle_rec = $w->handle('DM2339-ARIN');
-is($handle_rec{'Handle'}, 'DM2339-ARIN', 'handle() received the correct handle');
-
-my @cust_rec = $w->customer('ELIX');
-ok(!@cust_rec, 'returned undef because of bogus query');
+my @cust = $w->customer('Internet and Telephone');
+isa_ok($cust[0], 'Net::Whois::ARIN::Customer');
+ok(@cust, 'valid customer query');
 
