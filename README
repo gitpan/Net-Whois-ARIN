@@ -1,0 +1,198 @@
+
+
+
+User Contributed Perl Documentation           Net::Whois::ARIN(3)
+
+
+
+NNNNAAAAMMMMEEEE
+     Net::Whois::ARIN - client interface to the ARIN Whois server
+
+SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+       use Net::Whois::ARIN;
+
+       my $w = Net::Whois::ARIN->new;
+
+       my $result = $w->query( '207.173.112.1' );
+
+       my @results = $w->query( 'NET-207-173-112-0-1' );
+
+       my @output = $w->net( '207.173.112.0' );
+       foreach my $r (@output) {
+           printf(
+               "%s\t(%s)\t%s\n",
+               $r->{'OrgName'},
+               $r->{'NetHandle'},
+               $r->{'NetRange'}
+           );
+       }
+
+       my %asn = $w->asn( 5650 );
+       printf "AS5650 was assigned to %s\n", $asn{'OrgName'};
+       printf "The email address for AS5650's technical point of contact is %s\n", $asn{'TechEmail'};
+
+       my %poc = $w->poc('DM2339-ARIN');
+
+       my %org = $w->org('!ELIX');
+
+       my @records = $w->domain('eli.net');
+
+       my %handle = $w->handle('DM2339-ARIN');
+
+       my @customers = $w->customer('ELIX');
+
+DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+     This module provides a Perl interface to the ARIN Whois
+     server.  The module takes care of connecting to a whois
+     server, sending your whois requests, and parsing the whois
+     output.  The whois records are returned as a hash.  In cases
+     where more that one record is found a list of hashes are
+     returned instead.
+
+MMMMEEEETTTTHHHHOOOODDDDSSSS
+     In the calling conventions below "[]"'s represent optional
+     parameters.
+
+     nnnneeeewwww - create a Net::Whois::ARIN object
+
+
+
+
+
+
+perl v5.6.0          Last change: 2003-02-09                    1
+
+
+
+
+
+
+User Contributed Perl Documentation           Net::Whois::ARIN(3)
+
+
+
+           my $o = Net::Whois::ARIN->new(
+             [-hostname=> 'whois.arin.net',]
+             [-port    => 43,]
+             [-timeout => 45,]
+           );
+
+         This is the constuctor for Net::Whois::ARIN.  The object
+         returned can be used to query the whois database.
+
+     nnnneeeetttt - request a network record
+           my @records = $o->net('207.173.112.0');
+
+         This method requires a single argument.  The argument
+         indicates the network to use in the whois lookup.  The
+         method returns a list of network records that matched
+         your search criteria.
+
+     aaaassssnnnn - request an ASN record
+           my %record = $o->asn(5650);
+
+         This method requires a single argument.  The argument
+         indicates the autonomous system number to us in the
+         whois lookup.  The method returns a point-of-contact
+         record as a hash.  If the search criteria matches more
+         than one record a list of hashes are returned instead.
+         Searching ASN records by ASN always returns a single
+         record.  Just don't expect $o->asn('Network') to return
+         a single record.
+
+     ppppoooocccc - request a POC record
+           my %record = $w->poc('DM2339-ARIN');
+
+     oooorrrrgggg - request an organization record
+           my %record = $w->org('!ELIX');
+
+     ccccuuuussssttttoooommmmeeeerrrr - request a customer record
+           my @records = $w->customer('ELIX');
+
+     ddddoooommmmaaaaiiiinnnn - request all records from a given domain
+           @output = $w->domain('eli.net');
+
+     hhhhaaaannnnddddlllleeee - request a specific record using a whois handle
+           %record = $w->handle('DM2339-ARIN');
+
+         By querying the database using a handle you are
+         guarenteed to get one record back since handles are
+         always unique in the ARIN whois database.  This is
+         analogous to prepending your query with an "!"
+         character.
+
+AAAAUUUUTTTTHHHHOOOORRRR
+     Todd Caine   <todd at pobox.com>
+
+
+
+perl v5.6.0          Last change: 2003-02-09                    2
+
+
+
+
+
+
+User Contributed Perl Documentation           Net::Whois::ARIN(3)
+
+
+
+CCCCOOOOPPPPYYYYRRRRIIIIGGGGHHHHTTTT AAAANNNNDDDD LLLLIIIICCCCEEEENNNNSSSSEEEE
+     Copyright (c) 2002, 2003 Todd Caine.  All rights reserved.
+     This program is free software; you can redistribute it
+     and/or modify it under the same terms as Perl itself.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+perl v5.6.0          Last change: 2003-02-09                    3
+
+
+

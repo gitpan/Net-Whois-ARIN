@@ -1,0 +1,6 @@
+CVS/.*
+\.tar$
+\.tgz$
+\.tar\.gz$
+^Makefile\.[a-z]+$
+^test.conf$

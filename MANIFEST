@@ -1,0 +1,9 @@
+Changes
+MANIFEST
+MANIFEST.SKIP
+Makefile.PL
+ARIN.pm
+test.pl
+example/output.pl
+README
+README.html

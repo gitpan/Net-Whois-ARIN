@@ -1,0 +1,17 @@
+Revision history for Perl extension Net::Whois::ARIN.
+
+0.01  Wed Aug  7 08:52:56 2002
+	- original version; created by h2xs 1.20 with options
+		-AX -n Net::Whois::ARIN
+
+0.02  Thu Oct 31 13:28:17 2002
+	- updated the module to match changes to production whois output
+	- removed all references to ARIN's beta whois server
+	- added module documentation
+0.03
+	- removed query_* prefixes from query_domain() and query_handle()
+	- removed detail() and strict() and always for detailed reporting
+	- handle all multi-line fields
+
+0.04	- net() supports Cust and Org records
+

@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Net::Whois::ARIN - client interface to the ARIN Whois server</title>
+<link rev="made" href="mailto:skunkworks@eli.net" />
+</head>
+
+<body style="background-color: white">
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#methods">METHODS</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+	<li><a href="#copyright_and_license">COPYRIGHT AND LICENSE</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Net::Whois::ARIN - client interface to the ARIN Whois server</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<pre>
+  use Net::Whois::ARIN;</pre>
+<pre>
+  my $w = Net::Whois::ARIN-&gt;new;</pre>
+<pre>
+  my $result = $w-&gt;query( '207.173.112.1' );</pre>
+<pre>
+  my @results = $w-&gt;query( 'NET-207-173-112-0-1' );</pre>
+<pre>
+  my @output = $w-&gt;net( '207.173.112.0' );
+  foreach my $r (@output) {
+      printf(
+          &quot;%s\t(%s)\t%s\n&quot;,
+          $r-&gt;{'OrgName'},
+          $r-&gt;{'NetHandle'},
+          $r-&gt;{'NetRange'}
+      );
+  }</pre>
+<pre>
+  my %asn = $w-&gt;asn( 5650 );
+  printf &quot;AS5650 was assigned to %s\n&quot;, $asn{'OrgName'};
+  printf &quot;The email address for AS5650's technical point of contact is %s\n&quot;, $asn{'TechEmail'};</pre>
+<pre>
+  my %poc = $w-&gt;poc('DM2339-ARIN');</pre>
+<pre>
+  my %org = $w-&gt;org('!ELIX');</pre>
+<pre>
+  my @records = $w-&gt;domain('eli.net');</pre>
+<pre>
+  my %handle = $w-&gt;handle('DM2339-ARIN');</pre>
+<pre>
+  my @customers = $w-&gt;customer('ELIX');</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>This module provides a Perl interface to the ARIN Whois server.  The module takes care of connecting to a whois server, sending your whois requests, and parsing the whois output.  The whois records are returned as a hash.  In cases where more that one record is found a list of hashes are returned instead.</p>
+<p>
+</p>
+<hr />
+<h1><a name="methods">METHODS</a></h1>
+<p>In the calling conventions below <code>[]</code>'s represent optional parameters.</p>
+<dl>
+<dt><strong><a name="item_new_%2d_create_a_net%3a%3awhois%3a%3aarin_object"><strong>new</strong> - create a Net::Whois::ARIN object</a></strong><br />
+</dt>
+<dd>
+<pre>
+  my $o = Net::Whois::ARIN-&gt;new(
+    [-hostname=&gt; 'whois.arin.net',]
+    [-port    =&gt; 43,]
+    [-timeout =&gt; 45,]
+  );</pre>
+</dd>
+<dd>
+<p>This is the constuctor for Net::Whois::ARIN.  The object returned can be used to query the whois database.</p>
+</dd>
+<dt><strong><a name="item_net_%2d_request_a_network_record"><strong>net</strong> - request a network record</a></strong><br />
+</dt>
+<dd>
+<pre>
+  my @records = $o-&gt;net('207.173.112.0');</pre>
+</dd>
+<dd>
+<p>This method requires a single argument.  The argument indicates the network to use in the whois lookup.  The method returns a list of network records that matched your search criteria.</p>
+</dd>
+<dt><strong><a name="item_asn_%2d_request_an_asn_record"><strong>asn</strong> - request an ASN record</a></strong><br />
+</dt>
+<dd>
+<pre>
+  my %record = $o-&gt;asn(5650);</pre>
+</dd>
+<dd>
+<p>This method requires a single argument.  The argument indicates the autonomous system number to us in the whois lookup.  The method returns a point-of-contact record as a hash.  If the search criteria matches more than one record a list of hashes are returned instead.  Searching ASN records by ASN always returns a single record.  Just don't expect $o-&gt;<code>asn('Network')</code> to return a single record.</p>
+</dd>
+<dt><strong><a name="item_poc_%2d_request_a_poc_record"><strong>poc</strong> - request a POC record</a></strong><br />
+</dt>
+<dd>
+<pre>
+  my %record = $w-&gt;poc('DM2339-ARIN');</pre>
+</dd>
+<dt><strong><a name="item_org_%2d_request_an_organization_record"><strong>org</strong> - request an organization record</a></strong><br />
+</dt>
+<dd>
+<pre>
+  my %record = $w-&gt;org('!ELIX');</pre>
+</dd>
+<dt><strong><a name="item_customer_%2d_request_a_customer_record"><strong>customer</strong> - request a customer record</a></strong><br />
+</dt>
+<dd>
+<pre>
+  my @records = $w-&gt;customer('ELIX');</pre>
+</dd>
+<dt><strong><a name="item_domain_%2d_request_all_records_from_a_given_domain"><strong>domain</strong> - request all records from a given domain</a></strong><br />
+</dt>
+<dd>
+<pre>
+  @output = $w-&gt;domain('eli.net');</pre>
+</dd>
+<dt><strong><a name="item_handle_%2d_request_a_specific_record_using_a_whois"><strong>handle</strong> - request a specific record using a whois handle</a></strong><br />
+</dt>
+<dd>
+<pre>
+  %record = $w-&gt;handle('DM2339-ARIN');</pre>
+</dd>
+<dd>
+<p>By querying the database using a handle you are guarenteed to get one record back since handles are always unique in the ARIN whois database.  This is analogous to prepending your query with an ``!'' character.</p>
+</dd>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Todd Caine   &lt;todd at pobox.com&gt;</p>
+<p>
+</p>
+<hr />
+<h1><a name="copyright_and_license">COPYRIGHT AND LICENSE</a></h1>
+<p>Copyright (c) 2002, 2003 Todd Caine.  All rights reserved. This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.</p>
+
+</body>
+
+</html>
