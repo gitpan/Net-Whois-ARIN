@@ -1,5 +1,5 @@
 
-use Test::More tests => 26;
+use Test::More tests => 27;
 
 use_ok( 'Net::Whois::ARIN' );
 
@@ -42,6 +42,13 @@ isa_ok($contact[0], 'Net::Whois::ARIN::Contact');
 my @org = $w->organization('ELIX');
 isa_ok($org[0], 'Net::Whois::ARIN::Organization');
 ok($org[0]->OrgName, 'one org record for handle ELIX');
+
+{
+   my $module_died = 0;
+   local $SIG{__DIE__} = sub { $module_died ++ };
+   @org = $w->organization('This really better not exist');
+}
+ok(!$module_died, "a bogus query didn't kill the program");
 
 @output = $w->domain('eli.net');
 $DB::single ++;

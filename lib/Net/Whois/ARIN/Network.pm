@@ -1,5 +1,5 @@
 package Net::Whois::ARIN::Network;
-# $Id: Network.pm,v 1.6 2004/05/05 16:49:04 tcaine Exp $
+# $Id: Network.pm,v 1.7 2004/05/14 22:43:28 tcaine Exp $
 
 =pod
 
@@ -58,7 +58,7 @@ $VERSION = '0.01';
 
 sub new {
     my $class = shift;
-    return bless { @_ }, $class;
+    return bless { _contacts => [], @_ }, $class;
 }
 
 =pod

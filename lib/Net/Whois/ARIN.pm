@@ -1,5 +1,5 @@
 package Net::Whois::ARIN;
-# $Id: ARIN.pm,v 1.15 2004/05/05 16:49:01 tcaine Exp $
+# $Id: ARIN.pm,v 1.18 2004/05/14 22:43:26 tcaine Exp $
 
 =pod 
 
@@ -55,7 +55,7 @@ This module provides a Perl interface to the ARIN Whois server.  The module take
 use strict;
 
 use vars qw/ $VERSION /;
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 use Carp;
 use IO::Socket;
@@ -172,8 +172,7 @@ sub _parse_record {
 
   my @records = $o->network('207.173.112.0');
 
-This method requires a single argument.  The argument indicates the network to use in the whois lookup.  The method returns a
-list of Net::Whois::ARIN::Network records that matched your search criteria.
+This method requires a single argument.  The argument indicates the network to use in the whois lookup.  The method returns a list of Net::Whois::ARIN::Network records that matched your search criteria.
 
 =cut
 
@@ -229,8 +228,7 @@ sub network {
 
   my @record = $o->asn(5650);
 
-This method requires a single argument.  The argument indicates the autonomous system number to us in the whois lookup.  The m
-ethod returns a list of Net::Whois::ARIN::AS objects.  
+This method requires a single argument.  The argument indicates the autonomous system number to us in the whois lookup.  The method returns a list of Net::Whois::ARIN::AS objects.  
 
 =cut
 
@@ -257,7 +255,8 @@ sub asn {
         }
     }
 
-    chomp( $attributes{Address} );
+    chomp( $attributes{Address} )
+        if exists $attributes{Address};
 
     my $as = Net::Whois::ARIN::AS->new( %attributes );
     $as->contacts( @contacts );
@@ -275,7 +274,6 @@ sub asn {
 sub organization {
     my ($self, $query) = @_;
     my @output  = $self->query("o + $query");
-    my ($self, $query) = @_;
 
     my @records;
     my(%attributes, @contacts);
@@ -315,7 +313,8 @@ sub organization {
         }
     }
 
-    chomp( $attributes{Address} );
+    chomp( $attributes{Address} )
+        if exists $attributes{Address};
 
     my $org = Net::Whois::ARIN::Organization->new( %attributes );
     $org->contacts( @contacts );
@@ -373,7 +372,8 @@ sub customer {
         }
     }
 
-    chomp( $attributes{Address} );
+    chomp( $attributes{Address} )
+        if exists $attributes{Address};
 
     my $cust = Net::Whois::ARIN::Customer->new( %attributes );
     $cust->contacts( @contacts );
@@ -410,7 +410,8 @@ sub contact {
     my @contacts;
     foreach ( @records ) {
         my %attributes = %$_;
-        chomp($attributes{Address});
+        chomp($attributes{Address})
+            if exists $attributes{Address};
         push @contacts, Net::Whois::ARIN::Contact->new( %attributes );
     }
 
@@ -450,15 +451,15 @@ sub domain {
 
 =head1 SEE ALSO
 
-L<Net::Whois::ARIN::AS>
-L<Net::Whois::ARIN::Network>
-L<Net::Whois::ARIN::Contact>
-L<Net::Whois::ARIN::Organization>
-L<Net::Whois::ARIN::Customer>
+Net::Whois::ARIN::AS
+Net::Whois::ARIN::Network
+Net::Whois::ARIN::Contact
+Net::Whois::ARIN::Organization
+Net::Whois::ARIN::Customer
 
 =head1 AUTHOR
 
-Todd Caine   <todd at pobox.com>
+Todd Caine  <todd at pobox.com>
 
 =head1 COPYRIGHT AND LICENSE
 
