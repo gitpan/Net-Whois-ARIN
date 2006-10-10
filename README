@@ -1,5 +1,5 @@
 NAME
-    Net::Whois::ARIN - client interface to the ARIN Whois server
+    Net::Whois::ARIN - ARIN whois client
 
 SYNOPSIS
       use Net::Whois::ARIN;
@@ -53,10 +53,14 @@ METHODS
             [-hostname=> 'whois.arin.net',]
             [-port    => 43,]
             [-timeout => 45,]
+            [-retries => 3,]
           );
 
         This is the constuctor for Net::Whois::ARIN. The object returned can
         be used to query the whois database.
+
+    query - make a raw query to the whois server
+          my @output = $o->query('207.173.112.0');
 
     network - request a network record
           my @records = $o->network('207.173.112.0');
@@ -69,7 +73,7 @@ METHODS
           my @record = $o->asn(5650);
 
         This method requires a single argument. The argument indicates the
-        autonomous system number to us in the whois lookup. The method
+        autonomous system number to use in the whois lookup. The method
         returns a list of Net::Whois::ARIN::AS objects.
 
     organization - request an organization record
@@ -96,10 +100,10 @@ SEE ALSO
     Net::Whois::ARIN::Customer
 
 AUTHOR
-    Todd Caine <todd at pobox.com>
+    Todd Caine <todd.caine at gmail.com>
 
 COPYRIGHT AND LICENSE
-    Copyright (c) 2004 Todd Caine. All rights reserved.
+    Copyright (c) 2006 Todd Caine. All rights reserved.
 
     This program is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.

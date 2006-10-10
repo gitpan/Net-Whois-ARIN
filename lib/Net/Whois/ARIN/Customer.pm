@@ -44,12 +44,16 @@ our $AUTOLOAD;
 
 =item B<new> - create a Net::Whois::ARIN::Customer object
 
+=back
+
 =cut
 
 sub new {
     my $class = shift;
     return bless { _contacts => [], @_ }, $class;
 }
+
+=over 4
 
 =item B<contacts> - get/set Net::Whois::ARIN::Contact
 
@@ -66,9 +70,13 @@ sub contacts {
     return @{ $self->{_contacts} };
 }
 
+=over 4
+
 =item B<dump> - return the current whois record
 
   print $o->dump;
+
+=back
 
 =cut
 

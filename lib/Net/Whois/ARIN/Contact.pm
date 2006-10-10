@@ -57,6 +57,8 @@ sub new {
 
   print $o->dump;
 
+=back
+
 =cut
 
 sub dump {
@@ -86,6 +88,8 @@ sub Type {
 =head1 ATTRIBUTES
 
 These methods are the accessors/mutators for the fields found in the Whois record.
+
+=over 4
 
 =item B<Type> - get/set the contact type
 

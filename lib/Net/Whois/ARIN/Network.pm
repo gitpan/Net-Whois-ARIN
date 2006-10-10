@@ -72,9 +72,13 @@ sub contacts {
     return @{ $self->{_contacts} };
 }
 
+=over 4
+
 =item B<dump> - return the current whois record
 
   print $o->dump;
+
+=back
 
 =cut
 

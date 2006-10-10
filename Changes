@@ -1,5 +1,12 @@
 Revision history for Perl extension Net::Whois::ARIN.
 
+0.10	Tue Oct 10 09:12:22 2006
+	- added t/00-pod.t and t/00-pod-coverage.t
+        - documented the query() method
+        - fixed email address in the readme
+        - added a Build.PL file for Module::Build support
+	- added an examples directory with an example
+
 0.09	Mon Oct  9 19:28:03 2006
 	- tests now mock whois queries
         - updated contact email address

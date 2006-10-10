@@ -3,7 +3,7 @@ package Net::Whois::ARIN;
 
 =head1 NAME
 
-Net::Whois::ARIN - client interface to the ARIN Whois server
+Net::Whois::ARIN - ARIN whois client
 
 =head1 SYNOPSIS
 
@@ -53,7 +53,7 @@ This module provides a Perl interface to the ARIN Whois server.  The module take
 use strict;
 
 use vars qw/ $VERSION /;
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Carp;
 use IO::Socket;
@@ -139,6 +139,12 @@ sub _connect {
     $sock->autoflush();
     return $sock;
 }
+
+=item B<query> - make a raw query to the whois server
+
+  my @output = $o->query('207.173.112.0');
+
+=cut
 
 #  open connection, send a whois query, close connection, return whois response
 sub query {
