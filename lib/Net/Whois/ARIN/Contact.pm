@@ -1,8 +1,6 @@
 package Net::Whois::ARIN::Contact;
 # $Id: Contact.pm,v 1.7 2004/05/28 02:57:20 tcaine Exp $
 
-=pod
-
 =head1 NAME
 
 Net::Whois::ARIN::Contact - ARIN whois Contact record class
@@ -38,10 +36,9 @@ The Net::Whois::ARIN::Contact module is simple class which is used to store the 
 =cut
 
 use strict;
-use vars qw{ $VERSION };
-$VERSION = '0.08';
+use Carp "croak";
 
-=pod
+our $AUTOLOAD;
 
 =head1 METHODS
 
@@ -55,8 +52,6 @@ sub new {
     my $class = shift;
     return bless { @_ }, $class;
 }
-
-=pod
 
 =item B<dump> - return the current whois record
 
@@ -82,7 +77,11 @@ sub dump {
     return $record;
 }
 
-=pod
+sub Type {
+    my $self = shift;
+    $self->{Type} = shift if @_;
+    return $self->{Type};
+}
 
 =head1 ATTRIBUTES
 
@@ -120,17 +119,27 @@ These methods are the accessors/mutators for the fields found in the Whois recor
 
 =cut
 
-use Class::MethodMaker get_set => [qw(
-    Type Name Handle Company 
-    Address City StateProv PostalCode Country 
-    Comment RegDate Updated Phone Email
-)];
+sub AUTOLOAD {
+    my $self = shift;
+    my $name = $AUTOLOAD;
+    $name =~ s/.*://;
 
-=pod
+    return if $name eq 'DESTROY';
+
+    if ($name !~ /^_/ && exists $self->{$name}) {
+        if (@_) {
+            return $self->{$name} = shift;
+        } else {
+            return $self->{$name};
+        }
+    }
+
+    croak "Undefined subroutine \&$AUTOLOAD called";
+}
 
 =head1 AUTHOR
 
-Todd Caine   <todd at pobox.com>
+Todd Caine   <todd.caine at gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

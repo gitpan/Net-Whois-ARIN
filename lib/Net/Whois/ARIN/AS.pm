@@ -1,7 +1,7 @@
 package Net::Whois::ARIN::AS;
 # $Id: AS.pm,v 1.8 2004/05/28 02:57:20 tcaine Exp $
 
-=pod
+our $AUTOLOAD;
 
 =head1 NAME
 
@@ -38,10 +38,7 @@ The Net::Whois::ARIN::AS module is simple class which is used to store the attri
 =cut
 
 use strict;
-use vars qw{ $VERSION };
-$VERSION = '0.08';
-
-=pod
+use Carp "croak";
 
 =head1 METHODS
 
@@ -56,8 +53,6 @@ sub new {
     return bless { _contacts => [], @_ }, $class;
 }
 
-=pod
-
 =item B<contacts> - get/set Net::Whois::ARIN::Contact
 
 This method accepts a list of Net::Whois::ARIN::Contact and associates these objects with the AS record.  If no arguments are specified, the method returns a list of Net::Whois::ARIN::Contact objects.
@@ -71,8 +66,6 @@ sub contacts {
     $self->{_contacts} = [ @_ ] if @_;
     return @{ $self->{_contacts} };
 }
-
-=pod
 
 =item B<dump> - return the current whois record 
 
@@ -106,8 +99,6 @@ sub dump {
     return $record;
 }
 
-=pod
-
 =head1 ATTRIBUTES
 
 These methods are the accessors/mutators for the fields found in the Whois record.
@@ -139,21 +130,32 @@ These methods are the accessors/mutators for the fields found in the Whois recor
 =item B<ASHandle> - get/set the AS handle
 
 =item B<Comment> - get/set the public comment
-
+ 
 =back
 
 =cut
 
-use Class::MethodMaker get_set => [qw(
-    OrgName OrgID Address City StateProv PostalCode Country
-    RegDate Updated ASNumber ASName ASHandle Comment
-)];
+sub AUTOLOAD {
+    my $self = shift;
+    my $name = $AUTOLOAD;
+    $name =~ s/.*://;
 
-=pod
+    return if $name eq 'DESTROY';
+
+    if ($name !~ /^_/ && exists $self->{$name}) {
+        if (@_) {
+            return $self->{$name} = shift;
+        } else {
+            return $self->{$name};
+        }
+    }
+
+    croak "Undefined subroutine \&$AUTOLOAD called";
+}
 
 =head1 AUTHOR
 
-Todd Caine   <todd at pobox.com>
+Todd Caine   <todd.caine at gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

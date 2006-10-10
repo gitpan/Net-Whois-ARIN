@@ -1,53 +1,13 @@
 Revision history for Perl extension Net::Whois::ARIN.
 
-0.08    Thu May 27 19:53:27 2004
-        - adjusting test suite for everyone's favorite OS
+0.09	Mon Oct  9 19:28:03 2006
+	- tests now mock whois queries
+        - updated contact email address
+        - fixed consistency problem with contact type support
+        - accessor/mutators with AUTOLOAD for whois data objects
 
 0.07    Fri May 14 15:24:50 2004
         - removed duplication variable declaration in N::W::A->organization
         - initializing _contacts attribute in all record object constructors
         - cleaned up some initialized values warnings in ARIN.pm
-
-0.06    Wed May  5 09:51:52 2004
-        - new classes added to replace anonymous hashes
-            * Net::Whois::ARIN::AS
-            * Net::Whois::ARIN::Network
-            * Net::Whois::ARIN::Contact
-            * Net::Whois::ARIN::Organization
-            * Net::Whois::ARIN::Customer
-        - autogenerating accessors/mutators with Class::MethodMaker
-
--------------------------------------------------------------------------
-
-0.05    Apr 2004
-        - removed all method shortcuts
-            * net()  => network()
-            * poc()  => contact()
-            * org()  => organization()
-            * cust() => customer()
-
--------------------------------------------------------------------------
-
-0.04    Feb 2004
-	- net() supports Cust and Org records
-
--------------------------------------------------------------------------
-
-0.03    Jan 2004
-	- removed query_* prefixes from query_domain() and query_handle()
-	- removed detail() and strict() and always for detailed reporting
-	- handle all multi-line fields
-
--------------------------------------------------------------------------
-
-0.02  Thu Oct 31 13:28:17 2002
-	- updated the module to match changes to production whois output
-	- removed all references to ARIN's beta whois server
-	- added module documentation
-
--------------------------------------------------------------------------
-
-0.01  Wed Aug  7 08:52:56 2002
-	- original version; created by h2xs 1.20 with options
-	-AX -n Net::Whois::ARIN
 

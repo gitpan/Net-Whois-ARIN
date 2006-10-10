@@ -11,4 +11,14 @@ MANIFEST.SKIP
 META.yml
 README
 README.html
-test.pl
+t/01-connect.t
+t/02-as.t
+t/03-contact.t
+t/04-customer.t
+t/05-network.t
+t/06-organization.t
+t/whois/as.txt
+t/whois/customer.txt
+t/whois/poc.txt
+t/whois/network.txt
+t/whois/organization.txt

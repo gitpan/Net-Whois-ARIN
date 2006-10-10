@@ -1,8 +1,6 @@
 package Net::Whois::ARIN;
 # $Id: ARIN.pm,v 1.20 2004/05/28 03:06:04 tcaine Exp $
 
-=pod 
-
 =head1 NAME
 
 Net::Whois::ARIN - client interface to the ARIN Whois server
@@ -55,7 +53,7 @@ This module provides a Perl interface to the ARIN Whois server.  The module take
 use strict;
 
 use vars qw/ $VERSION /;
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 use Carp;
 use IO::Socket;
@@ -65,7 +63,7 @@ use Net::Whois::ARIN::Customer;
 use Net::Whois::ARIN::Network;
 use Net::Whois::ARIN::Organization;
 
-=pod
+my $CONTACT_REGEX = qr/(RTech|Tech|NOC|OrgAbuse|OrgTech|RAbuse|Abuse|Admin)(\w+)/;
 
 =head1 METHODS
 
@@ -79,6 +77,7 @@ In the calling conventions below C<[]>'s represent optional parameters.
     [-hostname=> 'whois.arin.net',]
     [-port    => 43,]
     [-timeout => 45,]
+    [-retries => 3,]
   );
 
 This is the constuctor for Net::Whois::ARIN.  The object returned can be used to query the whois database.
@@ -86,7 +85,7 @@ This is the constuctor for Net::Whois::ARIN.  The object returned can be used to
 =cut
 
 sub new {
-    my $class = ref($_[0]) ? ref(shift) : shift;
+    my $class = shift;
     my %param = @_;
     my %args;
 
@@ -105,7 +104,7 @@ sub new {
         '_port'    => $args{'port'} || 43,
         '_timeout' => $args{'timeout'},
         '_retries' => $args{'retries'} || 3,
-    }, ref $class || $class;
+    }, $class;
 
     return $self;
 }
@@ -152,22 +151,6 @@ sub query {
     return (wantarray) ? split(/\n/, $results) : $results;
 }
 
-sub _parse_record {
-    my @output = @_;
-    my (%record, %fields);
-    foreach (@output) {
-        if(my($key, $value) = $_ =~ /^(\S+):\s+(.*)$/) {
-            $value =~ s/\s*$//;
-            if ($fields{$key}) { $record{$key} .= "\n$value" }
-            else               { $record{$key}  = $value }
-            $fields{$key} ++;
-        }
-    }
-    return %record;
-}
-
-=pod
-
 =item B<network> - request a network record
 
   my @records = $o->network('207.173.112.0');
@@ -203,10 +186,11 @@ sub network {
             %attributes = ();
         }
   
-        if ($key =~ /^(Tech|NOC|OrgAbuse|OrgTech|Abuse)(\w+)$/ ) {
+        if ($key =~ /^$CONTACT_REGEX$/ ) {
             $found_contact_info ++;
             if ($2 eq 'Handle') {
-                push @contacts, $self->contact( $value );
+                my @data = $self->contact( $value );;
+                push @contacts, @data;
                 $contacts[-1]->Type( $1 );
             }
         }
@@ -222,13 +206,11 @@ sub network {
     return @records;
 }
 
-=pod
-
 =item B<asn> - request an ASN record
 
   my @record = $o->asn(5650);
 
-This method requires a single argument.  The argument indicates the autonomous system number to us in the whois lookup.  The method returns a list of Net::Whois::ARIN::AS objects.  
+This method requires a single argument.  The argument indicates the autonomous system number to use in the whois lookup.  The method returns a list of Net::Whois::ARIN::AS objects.  
 
 =cut
 
@@ -244,7 +226,7 @@ sub asn {
         if ($key eq 'Address') {
             $attributes{Address} .= "$value\n";
         }
-        elsif( $key =~ /^(Tech|NOC|OrgAbuse|OrgTech|Abuse)(\w+)$/ ) {
+        elsif( $key =~ /^$CONTACT_REGEX$/ ) {
             if ($2 eq 'Handle') {
                 push @contacts, $self->contact( $value );
                 $contacts[-1]->Type( $1 );
@@ -262,8 +244,6 @@ sub asn {
     $as->contacts( @contacts );
     return $as;
 }
-
-=pod
 
 =item B<organization> - request an organization record
 
@@ -301,7 +281,7 @@ sub organization {
         if ($key eq 'Address') {
             $attributes{Address} .= "$value\n";
         }
-        elsif( $key =~ /^(Tech|NOC|OrgAbuse|OrgTech|Abuse)(\w+)$/ ) {
+        elsif( $key =~ /^$CONTACT_REGEX$/ ) {
             $found_contact_info ++;
             if ($2 eq 'Handle') {
                 push @contacts, $self->contact( $value );
@@ -321,8 +301,6 @@ sub organization {
     push @records, $org;
     return @records;
 }
-
-=pod
 
 =item B<customer> - request a customer record
 
@@ -357,13 +335,16 @@ sub customer {
             @contacts = ();
             %attributes = ();
         }
+
         if ($key eq 'Address') {
             $attributes{Address} .= "$value\n";
         }
-        elsif( $key =~ /^(Tech|NOC|OrgAbuse|OrgTech|Abuse)(\w+)$/ ) {
+        elsif( $key =~ /^$CONTACT_REGEX$/ ) {
             $found_contact_info ++;
             if ($2 eq 'Handle') {
-                push @contacts, $self->contact( $value );
+		#  do a whois lookup for point of contact information
+		my @data = $self->contact($value);
+                push @contacts, @data;
                 $contacts[-1]->Type( $1 );
             }
         }
@@ -380,8 +361,6 @@ sub customer {
     push @records, $cust;
     return @records;
 }
-
-=pod
 
 =item B<contact> - request a point-of-contact record
 
@@ -418,8 +397,6 @@ sub contact {
     return @contacts;
 }
 
-=pod
-
 =item B<domain> - request all records from a given domain
 
   @output = $w->domain('eli.net');
@@ -447,8 +424,6 @@ sub domain {
     return @contacts;
 }
 
-=pod
-
 =head1 SEE ALSO
 
 L<Net::Whois::ARIN::AS>
@@ -463,11 +438,11 @@ L<Net::Whois::ARIN::Customer>
 
 =head1 AUTHOR
 
-Todd Caine  <todd at pobox.com>
+Todd Caine  <todd.caine at gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2004 Todd Caine.  All rights reserved. 
+Copyright (c) 2006 Todd Caine.  All rights reserved. 
 
 This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
