@@ -1,5 +1,10 @@
 Revision history for Perl extension Net::Whois::ARIN.
 
+0.11    Thu Oct 12 12:05:49 2006
+	- required a specific version of Test::MockObject
+        - used Build.PL to generate Makefile.PL
+        - used Build.PL to generate META.yml
+
 0.10	Tue Oct 10 09:12:22 2006
 	- added t/00-pod.t and t/00-pod-coverage.t
         - documented the query() method

@@ -12,7 +12,7 @@ my $build = Module::Build->new(
     requires           => {
         'IO::Socket::INET'   => 0,
         'Test::More'         => 0, 
-        'Test::MockObject'   => 0, 
+        'Test::MockObject'   => "1.07", 
     },
 );
 

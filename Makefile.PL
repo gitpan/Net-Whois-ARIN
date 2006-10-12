@@ -9,7 +9,7 @@ WriteMakefile
           'VERSION_FROM' => 'lib/Net/Whois/ARIN.pm',
           'PREREQ_PM' => {
                            'Test::More' => 0,
-                           'Test::MockObject' => 0,
+                           'Test::MockObject' => '1.07',
                            'IO::Socket::INET' => 0
                          }
         )

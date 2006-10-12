@@ -53,7 +53,7 @@ This module provides a Perl interface to the ARIN Whois server.  The module take
 use strict;
 
 use vars qw/ $VERSION /;
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use Carp;
 use IO::Socket;
