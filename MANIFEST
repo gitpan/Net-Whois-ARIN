@@ -9,7 +9,6 @@ Build.PL
 Makefile.PL
 MANIFEST
 MANIFEST.SKIP
-META.yml
 README
 t/00-pod-coverage.t
 t/00-pod.t
@@ -25,3 +24,4 @@ t/whois/network.txt
 t/whois/organization.txt
 t/whois/poc.txt
 examples/simple.pl
+META.yml                                 Module meta-data (added by MakeMaker)

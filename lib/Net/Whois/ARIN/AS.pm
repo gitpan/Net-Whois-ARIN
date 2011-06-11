@@ -1,5 +1,4 @@
 package Net::Whois::ARIN::AS;
-# $Id: AS.pm,v 1.8 2004/05/28 02:57:20 tcaine Exp $
 
 our $AUTOLOAD;
 
@@ -163,7 +162,7 @@ Todd Caine   <todd.caine at gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2004 Todd Caine.  All rights reserved. This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+Copyright (c) 2004-2011 Todd Caine.  All rights reserved. This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
 =cut
 

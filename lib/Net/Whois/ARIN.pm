@@ -1,5 +1,4 @@
 package Net::Whois::ARIN;
-# $Id: ARIN.pm,v 1.20 2004/05/28 03:06:04 tcaine Exp $
 
 =head1 NAME
 
@@ -15,13 +14,13 @@ Net::Whois::ARIN - ARIN whois client
               timeout => 30,
           );
 
-  #  fetch raw whois output as a list
+  #  fetch raw whois output as a scalar
   my $result = $w->query( '207.173.0.0' );
 
-  #  fetch raw whois output as a scalar
+  #  fetch raw whois output as a list
   my @results = $w->query( 'NET-207-173-0-0-1' );
 
-  #  get Net::Whois::ARIN::Network records
+  #  search for a network record
   my @output = $w->network( '207.173.0.0' );
   foreach my $net (@output) {
       printf(
@@ -30,19 +29,27 @@ Net::Whois::ARIN - ARIN whois client
           $net->NetHandle,
           $net->NetRange,
       );
+
+      # display the network's contact information
+      foreach my $cust ($net->contacts) {
+          printf "Contact: %s (%s)\n", $cust->Name, $cust->Email;
+      }
   }
 
+  # lookup an autonomous system number
   my($asn) = $w->asn( 5650 );
   printf "AS5650 was assigned to %s\n", $asn->OrgName;
-  printf "The email address for AS5650's technical point of contact is %s\n", $asn->TechEmail;
 
+  # search for a point-of-contact by handle
   my @contact = $w->contact('DM2339-ARIN');
 
   my @contact_records = $w->domain('eli.net');
 
-  my @org = $w->organization('ELIX');
+  # search for an organization record by the OrgId
+  my @org = $w->organization('FRTR');
 
-  my @customers = $w->customer('ELIX');
+  # search for a customer record by Handle
+  my @customers = $w->customer('C00823787');
 
 =head1 DESCRIPTION
 
@@ -53,7 +60,7 @@ This module provides a Perl interface to the ARIN Whois server.  The module take
 use strict;
 
 use vars qw/ $VERSION /;
-$VERSION = '0.11';
+$VERSION = '0.12';
 
 use Carp;
 use IO::Socket;
@@ -383,7 +390,8 @@ sub contact {
         next unless $_ =~ /^(\S+):\s+(.*)$/;
         my ($key, $value) = ($1, $2);
         $value =~ s/\s*$//;
-        $records[++$n] = {} if /^Name:/;
+#        $records[++$n] = {} if /^(Name):/;
+        $records[++$n] = {} if $n < 0;
         if ($key eq 'Address') {
             $records[$n]->{Address} .= "$value\n";
         }
@@ -448,7 +456,7 @@ Todd Caine  <todd.caine at gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2006 Todd Caine.  All rights reserved. 
+Copyright (c) 2004-2011 Todd Caine.  All rights reserved. 
 
 This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 

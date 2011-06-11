@@ -1,34 +1,23 @@
----
-name: Net-Whois-ARIN
-version: !!perl/hash:Module::Build::Version
-  original: 0.11
-  version:
-    - 0
-    - 110
-author: []
-abstract: ARIN whois client
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
+--- #YAML:1.0
+name:               Net-Whois-ARIN
+version:            0.12
+abstract:           ~
+author:  []
+license:            unknown
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
 requires:
-  IO::Socket::INET: 0
-  Test::MockObject: 1.07
-  Test::More: 0
-provides:
-  Net::Whois::ARIN:
-    file: lib/Net/Whois/ARIN.pm
-    version: 0.11
-  Net::Whois::ARIN::AS:
-    file: lib/Net/Whois/ARIN/AS.pm
-  Net::Whois::ARIN::Contact:
-    file: lib/Net/Whois/ARIN/Contact.pm
-  Net::Whois::ARIN::Customer:
-    file: lib/Net/Whois/ARIN/Customer.pm
-  Net::Whois::ARIN::Network:
-    file: lib/Net/Whois/ARIN/Network.pm
-  Net::Whois::ARIN::Organization:
-    file: lib/Net/Whois/ARIN/Organization.pm
-generated_by: Module::Build version 0.2804
+    IO::Socket::INET:  0
+    Test::MockObject:  1.07
+    Test::More:        0
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.56
 meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4

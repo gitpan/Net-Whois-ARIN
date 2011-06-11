@@ -1,5 +1,9 @@
 Revision history for Perl extension Net::Whois::ARIN.
 
+0.12    Sat Jun 11 07:52:36 2011
+        - fixed point-of-contact parsing bug
+        - updating synopsis 
+
 0.11    Thu Oct 12 12:05:49 2006
 	- required a specific version of Test::MockObject
         - used Build.PL to generate Makefile.PL
